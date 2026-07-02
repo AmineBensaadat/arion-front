@@ -1,0 +1,21 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/cart/page": "/cart",
+  "/checkout/page": "/checkout",
+  "/order-success/page": "/order-success",
+  "/product/[slug]/page": "/product/[slug]",
+  "/page": "/",
+  "/shop/page": "/shop",
+  "/admin/page": "/admin",
+  "/login/page": "/login",
+  "/admin/(protected)/categories/page": "/admin/categories",
+  "/admin/(protected)/customers/page": "/admin/customers",
+  "/admin/(protected)/dashboard/page": "/admin/dashboard",
+  "/admin/(protected)/orders/page": "/admin/orders",
+  "/admin/(protected)/orders/[id]/page": "/admin/orders/[id]",
+  "/admin/(protected)/products/[id]/page": "/admin/products/[id]",
+  "/admin/(protected)/products/new/page": "/admin/products/new",
+  "/admin/(protected)/products/page": "/admin/products",
+  "/admin/(protected)/settings/page": "/admin/settings",
+  "/admin/(auth)/login/page": "/admin/login"
+}
