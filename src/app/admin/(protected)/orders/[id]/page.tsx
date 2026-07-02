@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/adminAuth';
 import { useAdminAuthGuard } from '@/lib/useAdminAuthGuard';
 
-export default function AdminOrderDetailPage({ params }: { params: { id: string } }) {
+export default function AdminOrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   useAdminAuthGuard();
 
   const [order, setOrder] = useState<any | null>(null);
@@ -16,8 +16,10 @@ export default function AdminOrderDetailPage({ params }: { params: { id: string 
 
   useEffect(() => {
     const loadOrder = async () => {
+      const resolvedParams = await params;
+
       try {
-        const response = await adminFetch(`/api/admin/orders/${params.id}`);
+        const response = await adminFetch(`/api/admin/orders/${resolvedParams.id}`);
         const result = await response.json();
 
         if (!response.ok) {
@@ -36,7 +38,7 @@ export default function AdminOrderDetailPage({ params }: { params: { id: string 
     };
 
     loadOrder();
-  }, [params.id]);
+  }, [params]);
 
   const handleStatusUpdate = async () => {
     if (!order) return;
@@ -44,7 +46,8 @@ export default function AdminOrderDetailPage({ params }: { params: { id: string 
     setError('');
 
     try {
-      const response = await adminFetch(`/api/admin/orders/${params.id}`, {
+      const resolvedParams = await params;
+      const response = await adminFetch(`/api/admin/orders/${resolvedParams.id}`, {
         method: 'PATCH',
         body: JSON.stringify({ status }),
       });

@@ -205,7 +205,7 @@ export default function ProductPage({ params }: any) {
           const imageUrls: string[] = Array.isArray(data.images)
             ? data.images
                 .map((img: any) => normalizeImageUrl(String(img.path || ''), base))
-                .filter((url): url is string => Boolean(url))
+                .filter((url: string | null): url is string => Boolean(url))
             : [];
 
           const variants = Array.isArray(data.variants) ? data.variants : [];

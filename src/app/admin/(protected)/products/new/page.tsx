@@ -28,7 +28,7 @@ export default function AdminAddProductPage() {
     is_new: false,
     is_best_seller: false,
     show_on_homepage: false,
-    images: [{ path: '', alt_text: '' }],
+    images: [{ path: '', alt_text: '', is_default: false }],
     variants: [
       {
         sku: '',
@@ -123,7 +123,7 @@ export default function AdminAddProductPage() {
   const addImage = () => {
     setForm((prev) => ({
       ...prev,
-      images: [...prev.images, { path: '', alt_text: '' }],
+      images: [...prev.images, { path: '', alt_text: '', is_default: false }],
     }));
   };
 
@@ -263,7 +263,9 @@ export default function AdminAddProductPage() {
               type="button"
               onClick={() => setActiveTab('basic')}
               className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                activeTab === 'basic' ? 'bg-slate-900 text-white' : 'bg-white text-slate-700 border border-slate-200'
+                activeTab === 'basic'
+                  ? 'bg-slate-900 text-white'
+                  : 'bg-white text-slate-700 border border-slate-200'
               }`}
             >
               Basic information
@@ -272,7 +274,9 @@ export default function AdminAddProductPage() {
               type="button"
               onClick={() => setActiveTab('images')}
               className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                activeTab === 'images' ? 'bg-slate-900 text-white' : 'bg-white text-slate-700 border border-slate-200'
+                activeTab === 'images'
+                  ? 'bg-slate-900 text-white'
+                  : 'bg-white text-slate-700 border border-slate-200'
               }`}
             >
               Gallery of images
@@ -281,7 +285,9 @@ export default function AdminAddProductPage() {
               type="button"
               onClick={() => setActiveTab('variants')}
               className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                activeTab === 'variants' ? 'bg-slate-900 text-white' : 'bg-white text-slate-700 border border-slate-200'
+                activeTab === 'variants'
+                  ? 'bg-slate-900 text-white'
+                  : 'bg-white text-slate-700 border border-slate-200'
               }`}
             >
               Variants
@@ -292,431 +298,448 @@ export default function AdminAddProductPage() {
         {/* Basic info */}
         {activeTab === 'basic' && (
           <div className="space-y-4 border-b border-slate-200 pb-6">
-          <h2 className="text-lg font-semibold text-slate-900">Basic information</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
+            <h2 className="text-lg font-semibold text-slate-900">Basic information</h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="block">
+                <span className="text-sm font-semibold text-slate-700">Name</span>
+                <input
+                  type="text"
+                  value={form.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
+                  required
+                />
+              </label>
+              <label className="block">
+                <span className="text-sm font-semibold text-slate-700">Slug</span>
+                <input
+                  type="text"
+                  value={form.slug}
+                  onChange={(e) => handleInputChange('slug', e.target.value)}
+                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
+                  required
+                />
+              </label>
+            </div>
+
             <label className="block">
-              <span className="text-sm font-semibold text-slate-700">Name</span>
-              <input
-                type="text"
-                value={form.name}
-                onChange={(e) => handleInputChange('name', e.target.value)}
+              <span className="text-sm font-semibold text-slate-700">Category</span>
+              <select
+                value={form.category_id}
+                onChange={(e) => handleInputChange('category_id', e.target.value)}
                 className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
                 required
+              >
+                <option value="">Select a category</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="block">
+              <span className="text-sm font-semibold text-slate-700">Description</span>
+              <textarea
+                value={form.description}
+                onChange={(e) => handleInputChange('description', e.target.value)}
+                className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
+                rows={4}
               />
             </label>
+
             <label className="block">
-              <span className="text-sm font-semibold text-slate-700">Slug</span>
+              <span className="text-sm font-semibold text-slate-700">Price</span>
               <input
-                type="text"
-                value={form.slug}
-                onChange={(e) => handleInputChange('slug', e.target.value)}
+                type="number"
+                step="0.01"
+                value={form.price}
+                onChange={(e) => handleInputChange('price', e.target.value)}
                 className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
                 required
               />
             </label>
           </div>
-
-          <label className="block">
-            <span className="text-sm font-semibold text-slate-700">Category</span>
-            <select
-              value={form.category_id}
-              onChange={(e) => handleInputChange('category_id', e.target.value)}
-              className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
-              required
-            >
-              <option value="">Select a category</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="block">
-            <span className="text-sm font-semibold text-slate-700">Description</span>
-            <textarea
-              value={form.description}
-              onChange={(e) => handleInputChange('description', e.target.value)}
-              className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
-              rows={4}
-            />
-          </label>
-
-          <label className="block">
-            <span className="text-sm font-semibold text-slate-700">Price</span>
-            <input
-              type="number"
-              step="0.01"
-              value={form.price}
-              onChange={(e) => handleInputChange('price', e.target.value)}
-              className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
-              required
-            />
-          </label>
-        </div>
+        )}
 
         {/* Flags */}
         {activeTab === 'basic' && (
           <div className="space-y-4 border-b border-slate-200 pb-6">
-          <h2 className="text-lg font-semibold text-slate-900">Display settings</h2>
-          <div className="space-y-3">
-            <label className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                checked={form.show_on_homepage}
-                onChange={(e) => handleInputChange('show_on_homepage', e.target.checked)}
-                className="h-4 w-4 rounded border-slate-300"
-              />
-              <span className="text-sm font-medium text-slate-700">Show on homepage</span>
-            </label>
-            <label className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                checked={form.is_featured}
-                onChange={(e) => handleInputChange('is_featured', e.target.checked)}
-                className="h-4 w-4 rounded border-slate-300"
-              />
-              <span className="text-sm font-medium text-slate-700">Featured product</span>
-            </label>
-            <label className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                checked={form.is_new}
-                onChange={(e) => handleInputChange('is_new', e.target.checked)}
-                className="h-4 w-4 rounded border-slate-300"
-              />
-              <span className="text-sm font-medium text-slate-700">New product</span>
-            </label>
-            <label className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                checked={form.is_best_seller}
-                onChange={(e) => handleInputChange('is_best_seller', e.target.checked)}
-                className="h-4 w-4 rounded border-slate-300"
-              />
-              <span className="text-sm font-medium text-slate-700">Best seller</span>
-            </label>
+            <h2 className="text-lg font-semibold text-slate-900">Display settings</h2>
+            <div className="space-y-3">
+              <label className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  checked={form.show_on_homepage}
+                  onChange={(e) => handleInputChange('show_on_homepage', e.target.checked)}
+                  className="h-4 w-4 rounded border-slate-300"
+                />
+                <span className="text-sm font-medium text-slate-700">Show on homepage</span>
+              </label>
+              <label className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  checked={form.is_featured}
+                  onChange={(e) => handleInputChange('is_featured', e.target.checked)}
+                  className="h-4 w-4 rounded border-slate-300"
+                />
+                <span className="text-sm font-medium text-slate-700">Featured product</span>
+              </label>
+              <label className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  checked={form.is_new}
+                  onChange={(e) => handleInputChange('is_new', e.target.checked)}
+                  className="h-4 w-4 rounded border-slate-300"
+                />
+                <span className="text-sm font-medium text-slate-700">New product</span>
+              </label>
+              <label className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  checked={form.is_best_seller}
+                  onChange={(e) => handleInputChange('is_best_seller', e.target.checked)}
+                  className="h-4 w-4 rounded border-slate-300"
+                />
+                <span className="text-sm font-medium text-slate-700">Best seller</span>
+              </label>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Images */}
         {activeTab === 'images' && (
           <div className="space-y-4 border-b border-slate-200 pb-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-slate-900">Images</h2>
-              <p className="mt-2 text-sm text-slate-500">
-                Manage your product media library here. Upload images once and reuse them for
-                variant selection and storefront display.
-              </p>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-900">Images</h2>
+                <p className="mt-2 text-sm text-slate-500">
+                  Manage your product media library here. Upload images once and reuse them for
+                  variant selection and storefront display.
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setMediaOpen((open) => !open)}
+                  className="rounded-full border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-400"
+                >
+                  {mediaOpen ? 'Hide media' : 'Show media'}
+                </button>
+                <button
+                  type="button"
+                  onClick={addImage}
+                  className="rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800"
+                >
+                  Upload More Images
+                </button>
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setMediaOpen((open) => !open)}
-                className="rounded-full border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-400"
-              >
-                {mediaOpen ? 'Hide media' : 'Show media'}
-              </button>
-              <button
-                type="button"
-                onClick={addImage}
-                className="rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800"
-              >
-                Upload More Images
-              </button>
-            </div>
-          </div>
 
-          {mediaOpen ? (
-            <div className="space-y-4 pt-4">
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                {form.images.length === 0 ? (
-                  <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-500">
-                    No images added yet. Click Upload More Images to add product media to the
-                    gallery.
-                  </div>
-                ) : (
-                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {form.images.map((image, index) => (
+            {mediaOpen ? (
+              <div className="space-y-4 pt-4">
+                <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+                  {form.images.length === 0 ? (
+                    <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-500">
+                      No images added yet. Click Upload More Images to add product media to the
+                      gallery.
+                    </div>
+                  ) : (
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                      {form.images.map((image, index) => (
                         <div
                           key={index}
                           className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm"
                         >
-                        <div className="mb-4 flex items-center justify-between">
-                          <span className="text-sm font-semibold text-slate-700">
-                            Image {index + 1}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => removeImage(index)}
-                            className="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700 transition hover:bg-red-200"
-                          >
-                            Remove
-                          </button>
-                        </div>
-                        <ImageUploadField
-                          onImageUpload={(path, url) => handleImageChange(index, 'path', path)}
-                          onError={(error) => setUploadError(error)}
-                          existingImage={image.path}
-                          label="Product image"
-                          showPreview={true}
-                        />
-                        <div className="mt-3 flex items-center justify-between">
-                          <label className="flex items-center gap-2 text-sm">
-                            <input
-                              type="radio"
-                              name="default-image"
-                              checked={Boolean(image.is_default)}
-                              onChange={() => setDefaultImage(index)}
-                              className="h-4 w-4"
-                            />
-                            <span className="text-xs text-slate-600">Set as default</span>
-                          </label>
-                          {image.is_default && (
-                            <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700">Default</span>
-                          )}
-                        </div>
-                        <label className="mt-4 block">
-                          <span className="text-xs font-semibold text-slate-600">Alt text</span>
-                          <input
-                            type="text"
-                            value={image.alt_text}
-                            onChange={(e) => handleImageChange(index, 'alt_text', e.target.value)}
-                            className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-2 outline-none transition focus:border-slate-700"
-                            placeholder="Describe the image"
+                          <div className="mb-4 flex items-center justify-between">
+                            <span className="text-sm font-semibold text-slate-700">
+                              Image {index + 1}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => removeImage(index)}
+                              className="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700 transition hover:bg-red-200"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                          <ImageUploadField
+                            onImageUpload={(path, url) => handleImageChange(index, 'path', path)}
+                            onError={(error) => setUploadError(error)}
+                            existingImage={image.path}
+                            label="Product image"
+                            showPreview={true}
                           />
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                          <div className="mt-3 flex items-center justify-between">
+                            <label className="flex items-center gap-2 text-sm">
+                              <input
+                                type="radio"
+                                name="default-image"
+                                checked={Boolean(image.is_default)}
+                                onChange={() => setDefaultImage(index)}
+                                className="h-4 w-4"
+                              />
+                              <span className="text-xs text-slate-600">Set as default</span>
+                            </label>
+                            {image.is_default && (
+                              <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700">
+                                Default
+                              </span>
+                            )}
+                          </div>
+                          <label className="mt-4 block">
+                            <span className="text-xs font-semibold text-slate-600">Alt text</span>
+                            <input
+                              type="text"
+                              value={image.alt_text}
+                              onChange={(e) => handleImageChange(index, 'alt_text', e.target.value)}
+                              className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-2 outline-none transition focus:border-slate-700"
+                              placeholder="Describe the image"
+                            />
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                {uploadError && <p className="text-sm text-red-600">{uploadError}</p>}
               </div>
-              {uploadError && <p className="text-sm text-red-600">{uploadError}</p>}
-            </div>
-          ) : null}
-        </div>
+            ) : null}
+          </div>
+        )}
 
         {/* Variants */}
         {activeTab === 'variants' && (
           <div className="space-y-4 pb-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-slate-900">Variant options</h2>
-              <p className="mt-2 text-sm text-slate-500">
-                Add sizes, colors, prices, and stock for each product variant.
-              </p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-900">Variant options</h2>
+                <p className="mt-2 text-sm text-slate-500">
+                  Add sizes, colors, prices, and stock for each product variant.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={addVariant}
+                className="rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800"
+              >
+                Add variant
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={addVariant}
-              className="rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800"
-            >
-              Add variant
-            </button>
-          </div>
 
-          <div className="space-y-4" ref={variantListRef}>
-            {form.variants.map((variant, index) => {
-              const expanded = variantExpanded[index] ?? false;
-              const variantPreview = getPreviewUrl(variant.image);
-              return (
-                <div key={index} className="rounded-3xl border border-slate-200 bg-white shadow-sm">
-                  <div className="flex flex-col gap-4 p-4 lg:flex-row lg:items-center lg:justify-between">
-                    <div className="flex min-w-0 items-center gap-4">
-                      <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-3xl border bg-slate-100">
-                        {variantPreview ? (
-                          <img
-                            src={variantPreview}
-                            alt={variant.color || 'Variant image'}
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          <span className="text-xs text-slate-400">No image</span>
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-semibold text-slate-900">
-                          {variant.size || 'Size'} / {variant.color || 'Color'}
-                        </p>
-                        <p className="mt-1 text-xs text-slate-500">
-                          {variant.sku || 'SKU not set'}
-                        </p>
-                        <p className="mt-2 text-xs text-slate-500">
-                          {expanded
-                            ? 'Variant details expanded'
-                            : 'Click expand to edit variant details'}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => toggleVariantExpanded(index)}
-                        className="rounded-full border border-slate-300 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100"
-                      >
-                        {expanded ? 'Collapse' : 'Expand'}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => removeVariant(index)}
-                        className="rounded-full border border-red-200 bg-red-50 px-4 py-2 text-xs font-semibold text-red-700 transition hover:border-red-300 hover:bg-red-100"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-
-                  {expanded ? (
-                    <div className="border-t border-slate-200 px-4 py-4">
-                      <div className="grid gap-6 lg:grid-cols-[180px_1fr]">
-                        {/* Left: Vertical Thumbnail Gallery */}
-                        <div className="space-y-3">
-                          <p className="text-xs font-semibold text-slate-600">Variant image</p>
-                          {form.images.length === 0 ? (
-                            <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4 text-center">
-                              <p className="text-xs text-slate-500">Add images to library first</p>
-                            </div>
+            <div className="space-y-4" ref={variantListRef}>
+              {form.variants.map((variant, index) => {
+                const expanded = variantExpanded[index] ?? false;
+                const variantPreview = getPreviewUrl(variant.image);
+                return (
+                  <div
+                    key={index}
+                    className="rounded-3xl border border-slate-200 bg-white shadow-sm"
+                  >
+                    <div className="flex flex-col gap-4 p-4 lg:flex-row lg:items-center lg:justify-between">
+                      <div className="flex min-w-0 items-center gap-4">
+                        <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-3xl border bg-slate-100">
+                          {variantPreview ? (
+                            <img
+                              src={variantPreview}
+                              alt={variant.color || 'Variant image'}
+                              className="h-full w-full object-cover"
+                            />
                           ) : (
-                            <div className="space-y-2">
-                              {/* Main preview */}
-                              <div className="flex h-48 w-full items-center justify-center overflow-hidden rounded-3xl border-2 border-slate-200 bg-slate-100">
-                                {variantPreview ? (
-                                  <img
-                                    src={variantPreview}
-                                    alt="Variant preview"
-                                    className="h-full w-full object-cover"
-                                  />
-                                ) : (
-                                  <span className="text-xs text-slate-400">No image selected</span>
-                                )}
-                              </div>
-                              {/* Vertical thumbnails */}
-                              <div className="space-y-2">
-                                {form.images.map((image, imageIndex) => {
-                                  const path = image.path;
-                                  const preview = getPreviewUrl(path);
-                                  const checked = variant.image === path;
-                                  return (
-                                    <button
-                                      key={imageIndex}
-                                      type="button"
-                                      onClick={() => setVariantImage(index, path)}
-                                      className={`flex h-16 w-full items-center justify-center overflow-hidden rounded-2xl border-2 transition ${
-                                        checked
-                                          ? 'border-orange-500 shadow-sm'
-                                          : 'border-slate-200 hover:border-slate-300'
-                                      }`}
-                                      aria-pressed={checked}
-                                    >
-                                      {preview ? (
-                                        <img
-                                          src={preview}
-                                          alt={image.alt_text || `Image ${imageIndex + 1}`}
-                                          className="h-full w-full object-cover"
-                                        />
-                                      ) : (
-                                        <span className="text-xs text-slate-400">No preview</span>
-                                      )}
-                                    </button>
-                                  );
-                                })}
-                              </div>
-                            </div>
+                            <span className="text-xs text-slate-400">No image</span>
                           )}
                         </div>
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold text-slate-900">
+                            {variant.size || 'Size'} / {variant.color || 'Color'}
+                          </p>
+                          <p className="mt-1 text-xs text-slate-500">
+                            {variant.sku || 'SKU not set'}
+                          </p>
+                          <p className="mt-2 text-xs text-slate-500">
+                            {expanded
+                              ? 'Variant details expanded'
+                              : 'Click expand to edit variant details'}
+                          </p>
+                        </div>
+                      </div>
 
-                        {/* Right: Form Fields */}
-                        <div className="space-y-4">
-                          <div className="grid gap-4 sm:grid-cols-3">
-                            <label className="block">
-                              <span className="text-xs text-slate-500">Price</span>
-                              <input
-                                type="number"
-                                step="0.01"
-                                value={variant.price}
-                                onChange={(e) =>
-                                  handleVariantChange(index, 'price', e.target.value)
-                                }
-                                className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
-                                placeholder="0.00"
-                              />
-                            </label>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => toggleVariantExpanded(index)}
+                          className="rounded-full border border-slate-300 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100"
+                        >
+                          {expanded ? 'Collapse' : 'Expand'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => removeVariant(index)}
+                          className="rounded-full border border-red-200 bg-red-50 px-4 py-2 text-xs font-semibold text-red-700 transition hover:border-red-300 hover:bg-red-100"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
 
-                            <label className="block">
-                              <span className="text-xs text-slate-500">Compare at price</span>
-                              <input
-                                type="number"
-                                step="0.01"
-                                value={variant.compare_price}
-                                onChange={(e) =>
-                                  handleVariantChange(index, 'compare_price', e.target.value)
-                                }
-                                className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
-                                placeholder="0.00"
-                              />
-                            </label>
-
-                            <label className="block">
-                              <span className="text-xs text-slate-500">Stock</span>
-                              <input
-                                type="number"
-                                value={variant.stock}
-                                onChange={(e) =>
-                                  handleVariantChange(index, 'stock', e.target.value)
-                                }
-                                className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
-                                placeholder="0"
-                                min="0"
-                              />
-                            </label>
+                    {expanded ? (
+                      <div className="border-t border-slate-200 px-4 py-4">
+                        <div className="grid gap-6 lg:grid-cols-[180px_1fr]">
+                          {/* Left: Vertical Thumbnail Gallery */}
+                          <div className="space-y-3">
+                            <p className="text-xs font-semibold text-slate-600">Variant image</p>
+                            {form.images.length === 0 ? (
+                              <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4 text-center">
+                                <p className="text-xs text-slate-500">
+                                  Add images to library first
+                                </p>
+                              </div>
+                            ) : (
+                              <div className="space-y-2">
+                                {/* Main preview */}
+                                <div className="flex h-48 w-full items-center justify-center overflow-hidden rounded-3xl border-2 border-slate-200 bg-slate-100">
+                                  {variantPreview ? (
+                                    <img
+                                      src={variantPreview}
+                                      alt="Variant preview"
+                                      className="h-full w-full object-cover"
+                                    />
+                                  ) : (
+                                    <span className="text-xs text-slate-400">
+                                      No image selected
+                                    </span>
+                                  )}
+                                </div>
+                                {/* Vertical thumbnails */}
+                                <div className="space-y-2">
+                                  {form.images.map((image, imageIndex) => {
+                                    const path = image.path;
+                                    const preview = getPreviewUrl(path);
+                                    const checked = variant.image === path;
+                                    return (
+                                      <button
+                                        key={imageIndex}
+                                        type="button"
+                                        onClick={() => setVariantImage(index, path)}
+                                        className={`flex h-16 w-full items-center justify-center overflow-hidden rounded-2xl border-2 transition ${
+                                          checked
+                                            ? 'border-orange-500 shadow-sm'
+                                            : 'border-slate-200 hover:border-slate-300'
+                                        }`}
+                                        aria-pressed={checked}
+                                      >
+                                        {preview ? (
+                                          <img
+                                            src={preview}
+                                            alt={image.alt_text || `Image ${imageIndex + 1}`}
+                                            className="h-full w-full object-cover"
+                                          />
+                                        ) : (
+                                          <span className="text-xs text-slate-400">No preview</span>
+                                        )}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
                           </div>
 
-                          <div className="grid gap-4 sm:grid-cols-3">
-                            <label className="block">
-                              <span className="text-xs text-slate-500">Size</span>
-                              <input
-                                type="text"
-                                value={variant.size}
-                                onChange={(e) => handleVariantChange(index, 'size', e.target.value)}
-                                className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
-                                placeholder="XS, S, M, L"
-                              />
-                            </label>
-                            <label className="block">
-                              <span className="text-xs text-slate-500">Color</span>
-                              <input
-                                type="text"
-                                value={variant.color}
-                                onChange={(e) =>
-                                  handleVariantChange(index, 'color', e.target.value)
-                                }
-                                className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
-                                placeholder="Black, White"
-                              />
-                            </label>
-                            <label className="block">
-                              <span className="text-xs text-slate-500">SKU</span>
-                              <input
-                                type="text"
-                                value={variant.sku}
-                                onChange={(e) => handleVariantChange(index, 'sku', e.target.value)}
-                                className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
-                                placeholder="SKU-001"
-                              />
-                            </label>
+                          {/* Right: Form Fields */}
+                          <div className="space-y-4">
+                            <div className="grid gap-4 sm:grid-cols-3">
+                              <label className="block">
+                                <span className="text-xs text-slate-500">Price</span>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  value={variant.price}
+                                  onChange={(e) =>
+                                    handleVariantChange(index, 'price', e.target.value)
+                                  }
+                                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
+                                  placeholder="0.00"
+                                />
+                              </label>
+
+                              <label className="block">
+                                <span className="text-xs text-slate-500">Compare at price</span>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  value={variant.compare_price}
+                                  onChange={(e) =>
+                                    handleVariantChange(index, 'compare_price', e.target.value)
+                                  }
+                                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
+                                  placeholder="0.00"
+                                />
+                              </label>
+
+                              <label className="block">
+                                <span className="text-xs text-slate-500">Stock</span>
+                                <input
+                                  type="number"
+                                  value={variant.stock}
+                                  onChange={(e) =>
+                                    handleVariantChange(index, 'stock', e.target.value)
+                                  }
+                                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
+                                  placeholder="0"
+                                  min="0"
+                                />
+                              </label>
+                            </div>
+
+                            <div className="grid gap-4 sm:grid-cols-3">
+                              <label className="block">
+                                <span className="text-xs text-slate-500">Size</span>
+                                <input
+                                  type="text"
+                                  value={variant.size}
+                                  onChange={(e) =>
+                                    handleVariantChange(index, 'size', e.target.value)
+                                  }
+                                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
+                                  placeholder="XS, S, M, L"
+                                />
+                              </label>
+                              <label className="block">
+                                <span className="text-xs text-slate-500">Color</span>
+                                <input
+                                  type="text"
+                                  value={variant.color}
+                                  onChange={(e) =>
+                                    handleVariantChange(index, 'color', e.target.value)
+                                  }
+                                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
+                                  placeholder="Black, White"
+                                />
+                              </label>
+                              <label className="block">
+                                <span className="text-xs text-slate-500">SKU</span>
+                                <input
+                                  type="text"
+                                  value={variant.sku}
+                                  onChange={(e) =>
+                                    handleVariantChange(index, 'sku', e.target.value)
+                                  }
+                                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-700"
+                                  placeholder="SKU-001"
+                                />
+                              </label>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ) : null}
-                </div>
-              );
-            })}
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
 
         {message && <p className="text-sm text-slate-700">{message}</p>}
 
