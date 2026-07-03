@@ -13,10 +13,10 @@ export default function ShopPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/products');
+        const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://127.0.0.1:8000';
+        const res = await fetch(`${BACKEND_URL}/api/products`);
         const data = await res.json();
         const productsData = data.data || data;
-        const BACKEND_URL = 'http://127.0.0.1:8000';
 
         const transformed = productsData.map((product: any) => {
           const defaultImg = Array.isArray(product.images)
