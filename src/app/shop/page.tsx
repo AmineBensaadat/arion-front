@@ -13,7 +13,7 @@ export default function ShopPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://127.0.0.1:8000';
+        const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://shop.lmarka.com';
         const res = await fetch(`${BACKEND_URL}/api/products`);
         const data = await res.json();
         const productsData = data.data || data;
